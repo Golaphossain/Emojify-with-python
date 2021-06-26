@@ -1,4 +1,3 @@
-
 from typing import Collection
 import numpy as np
 import cv2
@@ -9,6 +8,8 @@ from keras.optimizers import Adam
 from keras.layers import MaxPooling2D
 from keras.preprocessing.image import ImageDataGenerator
 
+# 2. Initialize the training and validation generators
+
 train_dir = 'data/train'
 val_dir = 'data/test'
 train_datagen = ImageDataGenerator(rescale=1./255)
@@ -16,18 +17,19 @@ val_datagen = ImageDataGenerator(rescale=1./255)
 
 train_generator = train_datagen.flow_from_directory(
         train_dir,
-        target_size=(28,28),
-        batch_size=28,
-        # color_mode="gray_framescale",
-        color_mode="rgb",
+        target_size=(48,48),
+        batch_size=64,
+        color_mode="grayscale",
         class_mode='categorical')
 
 validation_generator = val_datagen.flow_from_directory(
         val_dir,
-        target_size=(28,28),
-        batch_size=28,
-        color_mode="rgb",
+        target_size=(48,48),
+        batch_size=64,
+        color_mode="grayscale",
         class_mode='categorical')
+
+# 3. Build the convolution network architecture
 
 emotion_model = Sequential()
 
@@ -46,12 +48,12 @@ emotion_model.add(Flatten())
 emotion_model.add(Dense(1024, activation='relu'))
 emotion_model.add(Dropout(0.5))
 emotion_model.add(Dense(7, activation='softmax'))
-emotion_model.load_weights('emotion_model.h5')
+
+# 4.Compile and train the model:
 
 cv2.ocl.setUseOpenCL(False)
 
 emotion_dict = {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
-
 
 emotion_model.compile(loss='categorical_crossentropy',optimizer=Adam(lr=0.0001, decay=1e-6),metrics=['accuracy'])
 emotion_model_info = emotion_model.fit_generator(
@@ -60,9 +62,11 @@ emotion_model_info = emotion_model.fit_generator(
         epochs=10,
         validation_data=validation_generator,
         validation_steps=7178 // 64)
-emotion_model.save_weights('model.h5')
 
-# start the webcam feed
+emotion_model.save_weights('emmodel.h5')
+
+# 5. Using openCV haarcascade xml detect the bounding boxes of face in the webcam and predict the emotions:
+
 cap = cv2.VideoCapture(0)
 while True:
     # Find haar cascade to draw bounding box around face

@@ -102,7 +102,7 @@ if __name__ == '__main__':
     heading=Label(root,bg='black')
     
     heading.pack() 
-    heading2=Label(root,text="Photo to Emoji",pady=20, font=('arial',45,'bold'),bg='black',fg='#CDCDCD')                                 
+    heading2=Label(root,text="Photo to Emoji",pady=20, font=('arial',30,'bold'),bg='black',fg='#CDCDCD')                                 
     
     heading2.pack()
     lmain = tk.Label(master=root,padx=50,bd=10)
@@ -110,11 +110,11 @@ if __name__ == '__main__':
 
     lmain3=tk.Label(master=root,bd=10,fg="#CDCDCD",bg='black')
     lmain.pack(side=LEFT)
-    lmain.place(x=50,y=250)
+    lmain.place(x=50,y=150)
     lmain3.pack()
-    lmain3.place(x=960,y=250)
+    lmain3.place(x=860,y=150)
     lmain2.pack(side=RIGHT)
-    lmain2.place(x=900,y=350)
+    lmain2.place(x=800,y=250)
     
 
 
