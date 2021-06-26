@@ -16,7 +16,7 @@ val_datagen = ImageDataGenerator(rescale=1./255)
 
 train_generator = train_datagen.flow_from_directory(
         train_dir,
-        target_size=(48,48),
+        target_size=(28,28),
         batch_size=64,
         # color_mode="gray_framescale",
         color_mode="rgb",
@@ -24,7 +24,7 @@ train_generator = train_datagen.flow_from_directory(
 
 validation_generator = val_datagen.flow_from_directory(
         val_dir,
-        target_size=(48,48),
+        target_size=(28,28),
         batch_size=64,
         color_mode="rgb",
         class_mode='categorical')
@@ -57,7 +57,7 @@ emotion_model.compile(loss='categorical_crossentropy',optimizer=Adam(lr=0.0001, 
 emotion_model_info = emotion_model.fit_generator(
         train_generator,
         steps_per_epoch=28709 // 64,
-        epochs=25,
+        epochs=10,
         validation_data=validation_generator,
         validation_steps=7178 // 64)
 emotion_model.save_weights('model.h5')
