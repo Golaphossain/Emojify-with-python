@@ -17,7 +17,7 @@ val_datagen = ImageDataGenerator(rescale=1./255)
 train_generator = train_datagen.flow_from_directory(
         train_dir,
         target_size=(28,28),
-        batch_size=64,
+        batch_size=28,
         # color_mode="gray_framescale",
         color_mode="rgb",
         class_mode='categorical')
@@ -25,7 +25,7 @@ train_generator = train_datagen.flow_from_directory(
 validation_generator = val_datagen.flow_from_directory(
         val_dir,
         target_size=(28,28),
-        batch_size=64,
+        batch_size=28,
         color_mode="rgb",
         class_mode='categorical')
 
